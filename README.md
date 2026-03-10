@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains a Java implementation aligned with the **Terminal Storage Card** specifications proposed
+This repository contains a Java implementation aligned with the **Terminal Generic Card** specifications proposed
 by the [Calypso Networks Association](https://www.calypsonet.org). It defines the interfaces needed to select and operate transactions with
 generic cards.
 
