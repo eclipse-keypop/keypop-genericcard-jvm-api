@@ -20,6 +20,11 @@ dependencies {
   implementation("org.eclipse.keypop:keypop-card-java-api:2.0.1")
   implementation("org.eclipse.keyple:keyple-util-java-lib:2.4.1")
   // End Keyple configuration
+
+  testImplementation(platform("org.junit:junit-bom:5.12.2"))
+  testImplementation("org.junit.jupiter:junit-jupiter")
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  testImplementation("org.assertj:assertj-core:3.25.3")
 }
 
 ///////////////////////////////////////////////////////////////////////////////
