@@ -1,2 +1,28 @@
-# keypop-genericcard-jvm-api
-Eclipse Keypop project repository containing a Java implementation of the 'Generic Card API' standardized by the Calypso Networks association for ticketing terminal processing smart card
+# Keypop Generic Card Jvm API
+
+## Overview
+
+This repository contains a Java implementation aligned with the **Terminal Storage Card** specifications proposed
+by the [Calypso Networks Association](https://www.calypsonet.org). It defines the interfaces needed to select and operate transactions with
+generic cards.
+
+## Documentation & Contribution Guide
+
+The full documentation, including the **user guide**, **download information** and **contribution guide**, is available
+on the Keypop website [keypop.org](https://keypop.org/).
+
+## API documentation
+
+API Javadoc is available [here](https://docs.keypop.org/keypop-genericcard-jvm-api).
+
+API documentation and class diagram is available
+[here](https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-jvm-api/).
+
+## About the source code
+
+The code is built with **Gradle** and is compliant with **Java 1.8** in order to address a wide range of applications.
+
+## Continuous Integration
+
+This project uses **GitHub Actions** for continuous integration. Every push and pull request triggers automated builds
+and checks to ensure code quality and maintain compatibility with the defined specifications.
