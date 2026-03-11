@@ -15,8 +15,8 @@ on the Keypop website [keypop.org](https://keypop.org/).
 
 API Javadoc is available [here](https://docs.keypop.org/keypop-genericcard-jvm-api).
 
-API documentation and class diagram is available
-[here](https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-jvm-api/).
+UML class diagram is available
+[here](https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/).
 
 ## About the source code
 
