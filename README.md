@@ -1,4 +1,4 @@
-# Keypop Generic Card Jvm API
+# Keypop Generic Card JVM API
 
 ## Overview
 
