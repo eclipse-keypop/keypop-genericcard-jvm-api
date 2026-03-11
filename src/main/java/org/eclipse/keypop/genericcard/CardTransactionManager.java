@@ -13,7 +13,9 @@ package org.eclipse.keypop.genericcard;
 
 import java.util.List;
 
-/** Provides basic methods to prepare and process APDU exchange with a card. */
+/** Provides basic methods to prepare and process APDU exchange with a card.
+ * @since 1.0.0
+ * */
 public interface CardTransactionManager
     extends org.eclipse.keypop.reader.transaction.spi.CardTransactionManager<
         CardTransactionManager> {
@@ -24,7 +26,7 @@ public interface CardTransactionManager
    *
    * @param apduCommand A not empty hexadecimal string containing a raw APDU command.
    * @return This instance.
-   * @since 2.0.0
+   * @since 1.0.0
    */
   CardTransactionManager prepareApdu(String apduCommand);
 
@@ -34,7 +36,7 @@ public interface CardTransactionManager
    *
    * @param apduCommand A not empty byte arrays containing raw APDU commands.
    * @return This instance.
-   * @since 2.0.0
+   * @since 1.0.0
    */
   CardTransactionManager prepareApdu(byte[] apduCommand);
 
@@ -50,7 +52,7 @@ public interface CardTransactionManager
    * @param le The expected output length, 0 if the output length is unspecified, null if no output
    *     data is expected.
    * @return This instance.
-   * @since 2.0.0
+   * @since 1.0.0
    */
   CardTransactionManager prepareApdu(byte cla, byte ins, byte p1, byte p2, byte[] dataIn, Byte le);
 
@@ -67,7 +69,7 @@ public interface CardTransactionManager
    *
    * @return A not {@code null} list of byte arrays representing the command responses, in the same
    *     order as the commands were sent.
-   * @since 3.2.0
+   * @since 1.0.0
    */
   List<byte[]> getResponsesAsByteArrays();
 
@@ -85,7 +87,7 @@ public interface CardTransactionManager
    *
    * @return A not {@code null} list of hexadecimal strings representing the command responses, in
    *     the same order as the commands were sent.
-   * @since 3.2.0
+   * @since 1.0.0
    */
   List<String> getResponsesAsHexStrings();
 }

@@ -16,7 +16,7 @@ import org.eclipse.keypop.reader.selection.spi.CardSelectionExtension;
 /**
  * Card specific {@link CardSelectionExtension} providing means to add successful status word.
  *
- * @since 3.0.0
+ * @since 1.0.0
  */
 public interface GenericCardSelectionExtension extends CardSelectionExtension {
 
@@ -28,7 +28,7 @@ public interface GenericCardSelectionExtension extends CardSelectionExtension {
    *
    * @param statusWord A positive int &le; {@code FFFFh}.
    * @return The current instance.
-   * @since 2.0.0
+   * @since 1.0.0
    */
   GenericCardSelectionExtension addSuccessfulStatusWord(int statusWord);
 }
