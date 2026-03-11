@@ -13,9 +13,11 @@ package org.eclipse.keypop.genericcard;
 
 import java.util.List;
 
-/** Provides basic methods to prepare and process APDU exchange with a card.
+/**
+ * Provides basic methods to prepare and process APDU exchange with a card.
+ *
  * @since 1.0.0
- * */
+ */
 public interface CardTransactionManager
     extends org.eclipse.keypop.reader.transaction.spi.CardTransactionManager<
         CardTransactionManager> {
