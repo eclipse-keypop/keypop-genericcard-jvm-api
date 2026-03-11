@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-03-10
+## [1.0.0] - 2026-03-11
 This is the initial release.
 
 [unreleased]: https://github.com/eclipse-keypop/keypop-genericcard-jvm-api/compare/1.0.0...HEAD 
