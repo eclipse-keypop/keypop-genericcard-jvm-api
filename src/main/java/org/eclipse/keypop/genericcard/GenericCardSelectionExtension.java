@@ -14,7 +14,8 @@ package org.eclipse.keypop.genericcard;
 import org.eclipse.keypop.reader.selection.spi.CardSelectionExtension;
 
 /**
- * Card specific {@link CardSelectionExtension} providing means to add successful status word.
+ * Extends the {@link CardSelectionExtension} interface of the "Keypop Reader API" to provide means
+ * to add successful status word.
  *
  * @since 1.0.0
  */
