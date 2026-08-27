@@ -12,84 +12,103 @@
 package org.eclipse.keypop.genericcard;
 
 import java.util.List;
+import org.eclipse.keypop.reader.transaction.spi.IsoCardTransactionManager;
 
 /**
- * Provides basic methods to prepare and process APDU exchange with a card.
+ * Basic operations to prepare, identify and process APDU exchanges with an ISO 7816-4 card,
+ * obtained via {@link GenericCardApiFactory#createCardTransaction}.
+ *
+ * <p>Commands are prepared with the {@code prepareCommand} overloads and processed through the
+ * inherited {@link IsoCardTransactionManager#processCommands()} operation.
+ *
+ * <p>See <a
+ * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#type_CardTransactionManager">CardTransactionManager</a>
+ * for the normative contract.
  *
  * @since 1.0.0
  */
-public interface CardTransactionManager
-    extends org.eclipse.keypop.reader.transaction.spi.CardTransactionManager<
-        CardTransactionManager> {
+public interface CardTransactionManager extends IsoCardTransactionManager {
 
   /**
-   * Prepares an APDU to be transmitted the next time {@link
-   * #processCommands(org.eclipse.keypop.reader.ChannelControl)} is invoked.
+   * Prepares an APDU command without command identifier nor duration bound.
    *
-   * @param apduCommand A not empty hexadecimal string containing a raw APDU command.
-   * @return This instance.
-   * @since 1.0.0
+   * <p>See <a
+   * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#op_CardTransactionManager_prepareCommand_apdu">CardTransactionManager.prepareCommand</a>
+   * for the normative contract.
+   *
+   * @param apdu A not empty byte array containing the raw APDU command.
+   * @return The current instance.
+   * @throws IllegalArgumentException If the provided array is null or empty.
+   * @since 2.0.0
    */
-  CardTransactionManager prepareApdu(String apduCommand);
+  CardTransactionManager prepareCommand(byte[] apdu);
 
   /**
-   * Prepares an APDU to be transmitted the next time {@link
-   * #processCommands(org.eclipse.keypop.reader.ChannelControl)} is invoked.
+   * Prepares an APDU command with an application-supplied identifier, usable to retrieve the
+   * corresponding response via {@link #getLastExecutionResponse(int)}.
    *
-   * @param apduCommand A not empty byte arrays containing raw APDU commands.
-   * @return This instance.
-   * @since 1.0.0
+   * <p>See <a
+   * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#op_CardTransactionManager_prepareCommand_withId">CardTransactionManager.prepareCommand</a>
+   * for the normative contract.
+   *
+   * @param apdu A not empty byte array containing the raw APDU command.
+   * @param idCommand The application-supplied identifier of this command.
+   * @return The current instance.
+   * @throws IllegalArgumentException If the provided array is null or empty.
+   * @since 2.0.0
    */
-  CardTransactionManager prepareApdu(byte[] apduCommand);
+  CardTransactionManager prepareCommand(byte[] apdu, int idCommand);
 
   /**
-   * Prepares an APDU to be transmitted the next time {@link
-   * #processCommands(org.eclipse.keypop.reader.ChannelControl)} is invoked.
+   * Prepares an APDU command with an application-supplied identifier and a maximum tolerated
+   * exchange duration, used to detect a relay attack at the individual command level.
    *
-   * @param cla The class byte.
-   * @param ins The instruction byte.
-   * @param p1 The P1 parameter.
-   * @param p2 The P2 parameter.
-   * @param dataIn The APDU data, null if there is no data.
-   * @param le The expected output length, 0 if the output length is unspecified, null if no output
-   *     data is expected.
-   * @return This instance.
-   * @since 1.0.0
+   * <p>The duration check is performed at processing time: an {@code InvalidCardResponseException}
+   * is raised if the effective duration exceeds the declared bound, the message identifying the
+   * offending command.
+   *
+   * <p>See <a
+   * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#op_CardTransactionManager_prepareCommand_withDuration">CardTransactionManager.prepareCommand</a>
+   * for the normative contract.
+   *
+   * @param apdu A not empty byte array containing the raw APDU command.
+   * @param idCommand The application-supplied identifier of this command.
+   * @param maxDuration The maximum tolerated duration of the APDU exchange, in milliseconds.
+   * @return The current instance.
+   * @throws IllegalArgumentException If the provided array is null or empty.
+   * @since 2.0.0
    */
-  CardTransactionManager prepareApdu(byte cla, byte ins, byte p1, byte p2, byte[] dataIn, Byte le);
+  CardTransactionManager prepareCommand(byte[] apdu, int idCommand, long maxDuration);
 
   /**
-   * Returns the list of responses corresponding to the commands executed by the last call to {@link
-   * #processCommands(org.eclipse.keypop.reader.ChannelControl)}, represented as byte arrays.
+   * Returns the responses collected during the last call to {@link
+   * IsoCardTransactionManager#processCommands()}, in the order in which the commands were prepared.
    *
-   * <p>Each element in the returned list represents the response of one command, in the same order
-   * as the commands were prepared. The returned list is never {@code null}. <br>
-   * This method does not alter the internal state of the manager: the list of responses remains
-   * available for later calls until {@link
-   * #processCommands(org.eclipse.keypop.reader.ChannelControl)} is invoked again, at which point it
-   * is replaced by the new set of responses.
+   * <p>This method does not alter the internal state of the manager: the list remains available
+   * until {@code processCommands()} is invoked again, at which point it is replaced by the new set
+   * of responses.
    *
-   * @return A not {@code null} list of byte arrays representing the command responses, in the same
-   *     order as the commands were sent.
-   * @since 1.0.0
+   * <p>See <a
+   * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#op_CardTransactionManager_getLastExecutionResponses">CardTransactionManager.getLastExecutionResponses</a>
+   * for the normative contract.
+   *
+   * @return A non-null but possibly empty list of byte arrays.
+   * @since 2.0.0
    */
-  List<byte[]> getResponsesAsByteArrays();
+  List<byte[]> getLastExecutionResponses();
 
   /**
-   * Returns the list of responses corresponding to the commands executed by the last call to {@link
-   * #processCommands(org.eclipse.keypop.reader.ChannelControl)}, represented as hexadecimal
-   * strings.
+   * Returns the response of the command identified by the provided identifier, the response of the
+   * last matching command if several prepared commands share that identifier.
    *
-   * <p>Each element in the returned list represents the response of one command, in the same order
-   * as the commands were prepared. The returned list is never {@code null}. <br>
-   * This method does not alter the internal state of the manager: the list of responses remains
-   * available for later calls until {@link
-   * #processCommands(org.eclipse.keypop.reader.ChannelControl)} is invoked again, at which point it
-   * is replaced by the new set of responses.
+   * <p>See <a
+   * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#op_CardTransactionManager_getLastExecutionResponse">CardTransactionManager.getLastExecutionResponse</a>
+   * for the normative contract.
    *
-   * @return A not {@code null} list of hexadecimal strings representing the command responses, in
-   *     the same order as the commands were sent.
-   * @since 1.0.0
+   * @param idCommand The application-supplied identifier of the command whose response is
+   *     requested.
+   * @return Null if no command with the supplied identifier produced a response.
+   * @since 2.0.0
    */
-  List<String> getResponsesAsHexStrings();
+  byte[] getLastExecutionResponse(int idCommand);
 }
