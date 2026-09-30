@@ -14,8 +14,13 @@ package org.eclipse.keypop.genericcard;
 import org.eclipse.keypop.reader.selection.spi.CardSelectionExtension;
 
 /**
- * Extends the {@link CardSelectionExtension} interface of the "Keypop Reader API" to provide means
- * to add successful status word.
+ * Extends the {@link CardSelectionExtension} interface of the Reader API to expose a way to declare
+ * additional successful status words for the Select Application APDU, obtained via {@link
+ * GenericCardApiFactory#createGenericCardSelectionExtension()}.
+ *
+ * <p>See <a
+ * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#type_GenericCardSelectionExtension">GenericCardSelectionExtension</a>
+ * for the normative contract.
  *
  * @since 1.0.0
  */
@@ -25,7 +30,12 @@ public interface GenericCardSelectionExtension extends CardSelectionExtension {
    * Adds a status word to the list of those that should be considered successful for the Select
    * Application APDU.
    *
-   * <p>Note: initially, the list contains the standard successful status word {@code 9000h}.
+   * <p>Note: initially, the list contains the standard successful status word {@code 9000h}; each
+   * call adds to the existing set and never removes that implicit entry.
+   *
+   * <p>See <a
+   * href="https://docs.terminal-api.calypsonet.org/calypsonet-terminal-genericcard-uml-api/2.0.0-SNAPSHOT/YYMMDD-SP-CNATerminalAPI-GenericCard_v2.0.0-SNAPSHOT.html#op_GenericCardSelectionExtension_addSuccessfulStatusWord">GenericCardSelectionExtension.addSuccessfulStatusWord</a>
+   * for the normative contract.
    *
    * @param statusWord A positive int &le; {@code FFFFh}.
    * @return The current instance.
